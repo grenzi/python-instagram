@@ -42,9 +42,17 @@ class Media(ApiModel):
         new_media = Media(id=entry['id'])
 
         new_media.user = User.object_from_dictionary(entry['user'])
+        new_media.type = entry['type']
         new_media.images = {}
-        for version, version_info in entry['images'].iteritems():
-            new_media.images[version] = Image.object_from_dictionary(version_info)
+        new_media.videos = {}
+
+        if 'images' in entry:
+            for version, version_info in entry['images'].iteritems():
+                new_media.images[version] = Image.object_from_dictionary(version_info)
+
+        if 'videos' in entry:
+            for version, version_info in entry['videos'].iteritems():
+                new_media.videos[version] = Image.object_from_dictionary(version_info)
 
         if 'user_has_liked' in entry:
             new_media.user_has_liked = entry['user_has_liked']
